@@ -1,0 +1,28 @@
+{include file="pub/header" /}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">留言区</h1>
+
+          <div class="row placeholders">
+            
+        <table class="table table-striped">
+		<tr>
+			<td>id</td>
+			<td>username</td>
+			<td>phone</td>
+			<td>handle</td>
+		</tr>
+		
+		 {volist name="adminres" id="vo" }
+		<tr>
+
+			<td>{$vo.id}</td>
+			<td>{$vo.username}</td>
+			<td>{$vo.phone}</td>	
+			<td><a href="{:url('delete',array('id'=>$vo['id']))}">删除</a>
+			<a href="{:url('edit',array('id'=>$vo['id']))}">修改</a></td>
+		</tr>
+		{/volist}
+		</table>
+		{$adminres->render()}
+		
+{include file="pub/left" /}

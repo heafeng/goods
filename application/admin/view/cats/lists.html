@@ -1,0 +1,39 @@
+{include file="pub/header" /}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">分类</h1>
+          <tr><a href="{:url('cats/add')}">添加</a></tr>
+
+          <div class="row placeholders">
+            
+        <table class="table table-striped">
+		<tr>
+			<td>id</td>
+			<td>catsname</td>
+			<td>type</td>
+			<td>pid</td>
+		</tr>
+		
+		 {volist name="catsres" id="vo" }
+		<tr>
+			
+			<td>{$vo.id}</td>
+			<td><?php echo str_repeat('-',$vo['level']*3);?>{$vo.catsname}</td>
+			<td>{$vo.type}</td>
+			<td>{$vo.pid}</td>		
+			<td><a href="{:url('delete',array('id'=>$vo['id']))}">删除</a>
+			<a href="{:url('update',array('id'=>$vo['id']))}">修改</a></td>
+		</tr>
+		{/volist}
+		</table>
+		
+		
+{include file="pub/left" /}
+
+
+
+中国
+---贵州
+---云南
+
+
+美国
