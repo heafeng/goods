@@ -1,0 +1,88 @@
+
+6 加入购物车
+url接口地址：http://shop.com/index/goods/cart
+请求方式： post
+请求参数（入参）： 
+    id      :int    :必须     :商品的id
+    token   :string :必须     :用户的token
+    count   :int    :必须     :商品数量
+    color   :string :可有可无   :商品属性，颜色
+    size    :string :可有可无   :商品属性，尺寸
+
+结果：（出参、响应）
+{
+    'error' : 0,
+    'msg' : '已加入购物车',
+    'data' : {
+    }
+}
+
+
+7 购物车
+url接口地址：http://shop.com/index/goods/cart
+请求方式： post
+请求参数（入参）： 
+    id      :int    :必须     :商品的id
+    token   :string :必须     :用户的token
+结果：（出参、响应）
+{
+    'error' : 0,
+    'msg' : '已加入购物车',
+    'data' : {
+    	'cart':{[
+    		'name'  : '',
+    		'color' : '',
+    		'price' : '',
+    		'count' :   ,
+    	],
+    	[
+    		'name'  : '',
+    		'color' : '',
+    		'price' : '',
+    		'count' :   ,
+    	],
+    }
+}
+
+
+
+
+1、登录：
+url接口地址：shop.com/index/user/dologin
+请求方式： post
+请求参数（入参）：phone,password
+phone：string：必须：电话号码
+password：string ：必须：密码
+结果：（出参、相应）
+goods 商品列表
+    img ：string : 必须 : 图片
+    tag : 标签
+banner: 图片列表
+
+{
+    'error' : 0,
+    'msg' : 'ok',
+    'data' : [
+        'token' : "",
+    ],    
+}
+
+
+
+2、注册：
+url接口地址：shop.com/index/user/reg
+请求方式： post
+请求参数（入参）： phone,password,username
+    phone : string : 必须 : 电话号码
+    password : string : 必须 : 密码
+    username : string : 必须 : 用户名
+结果：（出参、相应）
+info 商品详情
+{
+    'error' : 0,
+    'msg' : '注册成功',
+    'data' : {
+    }
+}
+
+

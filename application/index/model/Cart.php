@@ -7,23 +7,10 @@ use think\Model;
 class Cart extends Model
 {
 	public function addCart($data) {
-		// protected $autoWriteTimestamp = true;
-		// var_dump($data);die;
-		// unset($data['create_time']);
-		// unset($data['update_time']);
 		return $this->save($data);
-		// var_dump($data);die;
-		// if($this->insert($data)) {
-		// 	return true;
-		// }else{
-		// 	return false;
-		// }
 	}
 	public function getCartInfo($id){
 	$data=$this->where('user_id',$id)->select();
-	// var_dump($data);die;
-	// $data = $data->toArray();
-	// var_dump($data);die;
 	$data = collection($data)->toArray();
 	return $data;
 	}
@@ -31,7 +18,9 @@ class Cart extends Model
 		$result=[];
 		foreach ($data as $value) {
 			$result[]= [
+			'id'     => $value['id'],
     		'name'   => $value['goods_name'],
+    		'attr_img'=> $value['attr_img'],
     		'count'  => $value['count'],
     		'color'  => $value['color'],
     		'price'  => "￥".$value['price']/100,
@@ -39,5 +28,9 @@ class Cart extends Model
     		];
 		}
 		return $result;
+	}
+	public function delCart($id){
+		$info=$this->destroy($id);
+		return $info;
 	}
 }

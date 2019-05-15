@@ -12,7 +12,7 @@ class Token extends Model
 	public function setUserToken($userInfo){
 		$time=md5(time().rand(1,10000));
 		$user=md5(serialize($userInfo));
-		$token='usesr_token'.md5($time.$user);
+		$token='usesr_token_'.md5($time.$user);
 		$data=[
 			'token'=>$token,
 			'value'=>serialize($userInfo),

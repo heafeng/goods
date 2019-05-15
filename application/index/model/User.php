@@ -17,16 +17,6 @@ class User extends Model
 			$res[$value['phone']]=$value->toArray();
 		}
 		return $res;
-		// var_dump($name);die;
-		// if($phone){
-		// 	if($phone['password']=$data['password']) {
-		// 		return 2;
-		// 	}else{
-		// 		return 3;
-		// 	}
-		// }else{
-		// 	return 1;
-		// }
 	}
 	public function addUser($data){
 		if($this->save($data)) {

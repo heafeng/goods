@@ -6,6 +6,7 @@ use app\index\model\User as UserModel;
 use FileName\FileName;
 use userConter\UserConter;
 use app\index\model\Token;
+use filename\Response;
 /**
  * 
  */
@@ -16,92 +17,58 @@ class User
 		$tokenLists = new token();
 		$tokenRes   = $tokenLists->getUserToken($token);
 		$result = [
-            'error'=> 0,
-            'msg'  => '',
-            'data' =>[
             	'userinfo'=>$tokenRes,
-            ],
             ]; 
-            echo json_encode($result);
-            die();
-	}
-	public function login() {
-		return $this->fetch();
+        return Response::returnData($result);die;
 	}
 	public function doLogin() {
-		phpinfo();die;
 		$data=input('post.');
 		$lists=[
 			'phone'    => $data['phone'],
 			'password'     => $data['password'],
 		];
-		// var_dump($lists);die;
-		$result=[
-			'error'=>0,
-			'msg'=>'',
-			'data'=>'',
-		];
 		$list=new UserModel();
 		$getLists=new Token();
 		$info=$list->userlogin($lists);
-		// var_dump($info[$lists['phone']]);die;
 		if (isset($info[$lists['phone']])) {
-			// var_dump($lists['password'],$info[$lists['password']]);die;
 	        if ($lists['password'] == $info[$lists['phone']]['password']) {
-	            // $token = UserConter::getIntance()->setUserInfo($info[$lists['phone']]);
 	            $token = $getLists->setUserToken($info[$lists['phone']]);
 	            $name=$info[$lists['phone']]['username'];
-	            // var_dump($token);die;
-	            $result['data']  = [
+	            $result  = [
 	                'token' => $token,
 	                'name'  => $name,
 	            ];
+                return Response::returnData($result);die;
 	        } else {
-	            $result['error']  = 1;
-	            $result['msg']  = '密码错误';
+	            return Response::returnData([],1, '密码错误');die;
 	        }
 	    } else {
-	        $result['error']  = 2;
-	        $result['msg']  = '用户不存在';
-	    }
-		return json_encode($result);die;	
+	        return Response::returnData([],2, '用户不存在');die;
+	    }	
 	}
 	public function reg(){
 		$data=input('post.');
 		if (empty($data['phone'])||empty($data['password'])||empty($data['username'])) {
-			$result=[
-			'error'=>1,
-			'msg'=>'没有数据',
-			'data'=>'',
-		];
-		return json_encode($result);die;
+		return Response::returnData([],1, '没有数据');die;
 		}
 		$lists=[
 			'phone'    => $data['phone'],
 			'password' => $data['password'],
 			'username' => $data['username'],
 		];
-		$result=[
-			'error'=>0,
-			'msg'=>'',
-			'data'=>'',
-		];
 		$list=new UserModel();
-		$getLists = new UserModel();
 		$info=$list->checkPhone($lists['phone']);
 		if($info){
-			$getRes   = $getLists->addUser($lists);
+			$getRes   = $list->addUser($lists);
 			if ($getRes) {
-				$result['msg']='注册成功';
+				return Response::returnData([],0, '注册成功');die;
 			}
-			return json_encode($result);die;
 		}else{
-			$result['msg']='电话已被使用';
+			return Response::returnData([],1, '电话已被使用');die;
 		}
-		return json_encode($result);die;
 	}
 	public function edit () {
-       
+        
     }
     public function doEdit () {
         

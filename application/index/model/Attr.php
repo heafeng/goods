@@ -4,30 +4,27 @@ use think\Model;
 /**
  * 
  */
-class Cart extends Model
+class Attr extends Model
 {
-	public function addCart($data){
-		return $this->save($data);
-	}
-
-	public function getCartInfo($id){
-	$data=$this->where('user_id',$id)->select();
-	// var_dump($data);die;
-	// $data = $data->toArray();
-	// var_dump($data);die;
+	public function getAttrInfo($id){
+	$data=$this->where('goods_id',$id)->select();
 	$data = collection($data)->toArray();
 	return $data;
 	}
-	
-	public function formatCart($data){
+
+	public function getInfoById($id){
+	$data=$this->where('id',$id)->find();
+	$data = $data->toArray();
+	return $data;
+	}
+
+	public function formatAttr($data){
 		$result=[];
 		foreach ($data as $value) {
 			$result[]= [
-    		'name'   => $value['goods_name'],
-    		'count'  => $value['count'],
-    		'color'  => $value['color'],
-    		'price'  => "￥".$value['price']/100,
-    		'size'   => $value['size'],   
+    		'id'   => $value['id'],
+    		'backimg'  => $value['backimg'],
+    		'color'  => $value['color'],   
     		];
 		}
 		return $result;

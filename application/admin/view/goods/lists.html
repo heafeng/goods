@@ -1,0 +1,41 @@
+{include file="pub/header" /}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">商品列表</h1>
+
+          <div class="row placeholders">
+            
+        <table class="table table-striped">
+		<tr>
+			<td>id</td>
+			<td>name</td>
+			<td>pro</td>
+			<td>img</td>
+			<td>price</td>
+			<td>tag_id</td>
+			<td>content</td>
+			<td>handle</td>
+		</tr>
+		
+		 {volist name="goodsres" id="vo" }
+		<tr>
+
+			<td>{$vo.id}</td>
+			<td>{$vo.name}</td>
+			<td>{$vo.pro}</td>
+			<td>{$vo.img} </td>
+			<td>{$vo.price}</td>
+			<td>{$vo.tag_id}</td>
+			<td>{$vo.content}</td>	
+			<td><a href="{:url('attr',array('id'=>$vo['id']))}">属性列表</a>	
+			<td><a href="{:url('delete',array('id'=>$vo['id']))}">删除</a>
+			<a href="{:url('update',array('id'=>$vo['id']))}">修改</a></td>
+		</tr>
+		{/volist}
+		</table>
+		<div>
+            <button type="button"><a href="{:url('goods/add')}">add
+            </a></button>
+        </div> 
+		{$goodsres->render()}
+		
+{include file="pub/left" /}

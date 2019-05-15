@@ -41,19 +41,9 @@ class Word extends Controller
 		$this->success('添加成功','word/lit');
 	}
 	public function lit() {
-		// $adminres=Db::table('Word')->select();
-		// $this->assign('adminres',$adminres);
 		$word=new WordAdmin();
-		// if(class_exists('ws')){
-		// 	echo "ok";
-		// }else{
-		// 	return $this->fetch('admin/login');
-		
-		// }
 		$wordres=$word->getwords();
-		// var_dump($wordres);die;
 		$this->assign('wordres',$wordres);
-		// return $this->fetch();
 		return $this->fetch();
 	}
 	public function update($id) {

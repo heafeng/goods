@@ -6,76 +6,61 @@ use app\index\model\Tag;
 use app\index\model\Goods as GoodsModel;
 use app\index\model\Token;
 use app\index\model\Cart;
+use app\index\model\Attr;
 use filename\Response;
 class Goods extends Banner
 {
     public function getList()
     {
-        // phpinfo();die;
-    	$goodsLists   = new GoodsModel();
+        $goodsLists   = new GoodsModel();
     	$bannerLists  = new Banner();
     	$tagLists     = new Tag();
     	$arra     = $tagLists->getInfo();
-    	// var_dump($arra);die;
 
     	$arr      = $goodsLists->getInfo();
     	$goodsRes = $goodsLists->formatGoods($arr,$arra);
 
     	$ar     = $bannerLists->getInfo();
     	$bannerRes=$bannerLists->formatBanner($ar);
-        // $result = [
-        //     'error'=>0,
-        //     'msg'=>'ok',
-        //     'data'=>[
-        //         'goods'=>$goodsRes,
-        //         'banner'=>$bannerRes,
-        //     ]
-        //     ];
-        // return json_encode($result);die;
     	$result = [
     			'goods'=>$goodsRes,
     			'banner'=>$bannerRes,
     		];
-    	// FileName::Response()->returnData($result);
-        $data=Response::returnData($result);
-        return $data;die;
+        return Response::returnData($result);die;
     }
     public function detail() {
         $id=input('get.id');
         if(empty($id)){
-           $result = [
-            'error'=> 1,
-            'msg'  => 'param error',
-            'data' =>[],
-            ]; 
-            echo json_encode($result);
-            die();
+            return Response::returnData([],1, 'param error');die;
         }
+        $attrLists    = new Attr();
         $tagLists     = new Tag();
         $goodsLists   = new GoodsModel();
-        $arra     = $tagLists->getInfo();
-        $arr      = $goodsLists->getList($id);
-        $goodsRes = $goodsLists->formatDetail($arr,$arra);
+        $arra         = $tagLists->getInfo();
+        $arr          = $goodsLists->getList($id);
+        $attrInfo     = $attrLists->getAttrInfo($id);
+        $attrRes      = $attrLists->formatAttr($attrInfo);
+        $goodsRes     = $goodsLists->formatDetail($arr,$arra,$attrRes);
         $result = [
-            'error'=>0,
-            'msg'=>'ok',
-            'data'=>[
                 'info'=>$goodsRes,
-            ],
             ];
-        return json_encode($result);die;
+        return Response::returnData($result);die;
     }
     public function cart(){
-        $data  = input('post.');
-        $id    = input('post.id');
-        $token = input('post.token');
+        $data       = input('post.');
+        $id         = input('post.id');
+        $attr_id    = input('post.attr_id');
+        $token      = input('post.token');
         $tokenLists = new token();
         $cartLists  = new cart();
+        $attrLists  = new Attr();
         $goodsLists = new GoodsModel();
+        $attrInfo   = $attrLists->getInfoById($id);
         $tokenRes   = $tokenLists->getUserToken($token);
         if (!empty($id)) {
-             $info = $goodsLists->getGooodsInfo($id);
+            $info = $goodsLists->getGooodsInfo($id);
             $data= [
+                'attr_img'   => $attrInfo['backimg'],
                 'goods_name' => $info['name'],
                 'count'      => $data['count'],
                 'color'      => $data['color'],
@@ -84,20 +69,12 @@ class Goods extends Banner
                 'size'       => $data['size'],
                 ];
             $carts    = $cartLists->addCart($data);
-            $result = [
-            'error'=> 0,
-            'msg'  => '已加入购物车',
-            'data' =>[],
-            ];
+            return Response::returnData([],0, '已加入购物车');die;
         }else{
-           $result = [
-            'error'=> 1,
-            'msg'  => 'param error',
-            'data' =>[],
-            ]; 
+            return Response::returnData([],1, 'param error');die; 
         }  
-        echo json_encode($result);die(); 
     }
+
     public function cartInfo() {
         $token = input('post.token');
         $cartLists  = new cart();
@@ -107,21 +84,21 @@ class Goods extends Banner
             $cartInfo = $cartLists->getCartInfo($tokenRes['id']);
             $cartRes = $cartLists->formatCart($cartInfo);
             $result = [
-                'error'=>0,
-                'msg'=>'ok',
-                'data'=>[
                     'cart'=>$cartRes,
-                ]
                 ];
-            return json_encode($result);die;
+            return Response::returnData($result);die;
         }else{
-           $result = [
-            'error'=> 1,
-            'msg'  => 'param error',
-            'data' =>[],
-            ]; 
-            echo json_encode($result);
-            die();
+            return Response::returnData([],1, 'param error');die; 
         } 
+    }
+    public function deleteCart(){
+        $id = input('post.id');
+        $cartLists  = new cart();
+        $cartRes    = $cartLists->delCart($id);
+        if($cartRes){
+            return Response::returnData([],0, '删除成功');die; 
+        }else{
+            return Response::returnData([],1, '删除失败');die;
+        }
     }
 }

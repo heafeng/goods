@@ -44,7 +44,7 @@ class Goods extends Model
 	public function getList($id) {
 		return $this->where('id',$id)->find();
 	}
-	public function formatDetail($item,$tag=array()) {
+	public function formatDetail($item,$tag=array(),$attr) {
 		// var_dump($item);die;
 		$result=[];
 		$value=[
@@ -55,7 +55,7 @@ class Goods extends Model
 			'price'  => "￥".$item['price']/100,
 			'tag'    => [],
 			'content'=>htmlspecialchars_decode($item['content']),
-
+			'attr'   => $attr,
 		];
 		$tagArr = explode(',', $item['tag_id']); //2,3 => [2,3]
 		// var_dump();die;

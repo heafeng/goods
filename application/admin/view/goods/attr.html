@@ -1,31 +1,29 @@
 {include file="pub/header" /}
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">留言区</h1>
-
-          <div class="row placeholders">
-            
+          <h1 class="page-header">商品属性列表</h1>
+		<div class="row placeholders">  
         <table class="table table-striped">
 		<tr>
 			<td>id</td>
-			<td>username</td>
 			<td>img</td>
-			<td>content</td>
+			<td>color</td>
+			<td>goods_id</td>
 			<td>handle</td>
 		</tr>
 		
-		 {volist name="wordres" id="vo" }
+		 {volist name="attrres" id="vo" }
 		<tr>
-
 			<td>{$vo.id}</td>
-			<td>{$vo.username}</td>
-			<td><img src="/liuyan/public/{$vo.img}"  ></td>
-			
-			<td>{$vo.content}</td>	
+			<td>{$vo.backimg} </td>
+			<td>{$vo.color} </td>
+			<td>{$vo.goods_id}</td>
 			<td><a href="{:url('delete',array('id'=>$vo['id']))}">删除</a>
 			<a href="{:url('update',array('id'=>$vo['id']))}">修改</a></td>
 		</tr>
 		{/volist}
 		</table>
-		{$wordres->render()}
-		
+		<div>
+            <button type="button"><a href="{:url('goods/addattr',array('id'=>$vo['goods_id']))}">add
+            </a></button>
+        </div> 
 {include file="pub/left" /}
