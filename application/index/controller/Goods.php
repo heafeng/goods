@@ -51,15 +51,18 @@ class Goods extends Banner
         $id         = input('post.id');
         $attr_id    = input('post.attr_id');
         $token      = input('post.token');
+        if (empty($data)) {
+        return Response::returnData([],1, '没有数据');die;
+        }
         $tokenLists = new token();
         $cartLists  = new cart();
         $attrLists  = new Attr();
         $goodsLists = new GoodsModel();
-        $attrInfo   = $attrLists->getInfoById($id);
+        $attrInfo   = $attrLists->getInfoById($attr_id);
         $tokenRes   = $tokenLists->getUserToken($token);
-        if (!empty($id)) {
-            $info = $goodsLists->getGooodsInfo($id);
-            $data= [
+        $cartInfo   = $cartLists->getCartInfo($tokenRes['id']);
+        $info       = $goodsLists->getGoodsInfo($id);
+        $data= [
                 'attr_img'   => $attrInfo['backimg'],
                 'goods_name' => $info['name'],
                 'count'      => $data['count'],
@@ -68,11 +71,49 @@ class Goods extends Banner
                 'user_id'    => $tokenRes['id'],
                 'size'       => $data['size'],
                 ];
+        if (empty($cartInfo)) {
+            echo "123";
             $carts    = $cartLists->addCart($data);
             return Response::returnData([],0, '已加入购物车');die;
+        }
+        $check = $cartLists->check($cartInfo,$data);
+        if($check){
+            foreach ($cartInfo as $key => $value) {
+                if($data['goods_name']==$value['goods_name']&&$data['color']==$value['color']){
+                    $num=$data['count']+$value['count'];
+                    $date=$cartLists->checkCart($value['id'],$num);
+                }
+            }
+            return Response::returnData([],0, '已加入购物车');die;
         }else{
-            return Response::returnData([],1, 'param error');die; 
-        }  
+            $carts    = $cartLists->addCart($data);
+            return Response::returnData([],0, '已加入购物车');die;
+        }
+        // $data = [
+        //     'attr_img'   => $attrInfo['backimg'],
+        //     'goods_name' => $info['name'],
+        //     'count'      => $data['count'],
+        //     'color'      => $data['color'],
+        //     'price'      => $info['price'],
+        //     'user_id'    => $tokenRes['id'],
+        //     'size'       => $data['size'],
+        //     ];
+        // $carts    = $cartLists->addCart($data);
+        // return Response::returnData([],0, '已加入购物车');die;
+        // if (!empty($cartInfo)) {
+        //     foreach ($cartInfo as $key => $value) {
+        //         if($data['goods_name']==$value['goods_name']&&$data['color']==$value['color']){
+        //             $num=$data['count']+$value['count'];
+        //             $date=$cartLists->checkCart($value['id'],$num);
+        //             if (!empty($date)) {
+        //             return Response::returnData([],0, '已加入购物车');die;
+        //             }
+        //         }
+        //     }
+        // }else{
+        //     $carts    = $cartLists->addCart($data);
+        //     return Response::returnData([],0, '已加入购物车');die;
+        // }
     }
 
     public function cartInfo() {
@@ -100,5 +141,11 @@ class Goods extends Banner
         }else{
             return Response::returnData([],1, '删除失败');die;
         }
+    }
+    public function test()
+    {
+        $dbh= new PDO('127.0.0.1','root','','shop');
+        $count = $dbh->exec("SELECT * FROM banner");
+        echo $count;
     }
 }

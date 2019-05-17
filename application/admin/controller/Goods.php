@@ -40,8 +40,8 @@ class Goods extends Controller
 			}
     	// echo json_encode($result);die;
 	}
-    public function addAttr($id) {
-        $this->assign('goods_id',$id);
+    public function addAttr() {
+        // $this->assign('goods_id',$id);
         return $this->fetch();
     }
     public function doAddAttr() {
@@ -61,14 +61,15 @@ class Goods extends Controller
     public function attr($id) {
         $attr=new GoodsModel();
         $attrres=$attr->getAttrById($id);
-        if (empty($attrres)) {
-            $attrres[]=[
-                'id'      =>'',
-                'backimg' =>'',
-                'color'   =>'',
-                'goods_id'=>$id,
-            ];
-        }
+        // if (empty($attrres)) {
+        //     $attrres[]=[
+        //         'id'      =>'',
+        //         'backimg' =>'',
+        //         'color'   =>'',
+        //         'goods_id'=>$id,
+        //     ];
+        // }
+        $this->assign('goodsid',$id);
         $this->assign('attrres',$attrres);
         return $this->fetch();
     }

@@ -11,7 +11,7 @@ class Goods extends Model
 	// $data = $data->toArray();
 	return $data;
 	}
-	public function getGooodsInfo($id){
+	public function getGoodsInfo($id){
 	$data=$this->where('id',$id)->find();
 	$data = $data->toArray();
 	return $data;
